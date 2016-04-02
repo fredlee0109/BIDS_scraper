@@ -6,8 +6,8 @@ Download Facebook SDK Python package. </br>
 or </br>
 `sudo pip install facebook-sdk`
 <h3> Installing from Git </h3>
-`virtualenv facebookenv 
-source facebookenv/bin/activate
+`virtualenv facebookenv </br>
+source facebookenv/bin/activate </br>
 pip install -e git+https://github.com/mobolic/facebook-sdk.git#egg=facebook-sdk`
 
 <h2> Credit </h2>
