@@ -16,12 +16,16 @@ class fbAPI(object):
 		start = link.find('facebook.com/') + 13
 		if start == -1:
 			self.page = None
+			print 'Not a valid address'
 			return
 		if link[start:].find('/') == -1:
 			end = 5
 		else:
 			end = link[start:].find('/') + start
 		self.page = link[start:end]
+		if self.page == 'media':
+			print 'Not a page'
+			return
 		self.response = requests.get(
 			API_KEY.URL.format(
 				version=API_KEY.fb_version,
@@ -32,25 +36,19 @@ class fbAPI(object):
 			print 'Failed to fetch'
 
 	def point(self):
-		if 'error' in self.response:
-			print 'Failed to fetch'
+		if 'error' in self.response or self.page == 'media' or self.page == None:
 			return
 		point = 0
 		if self.post_date_diff() != None and self.post_date_diff() < 3.154e+7:
 			point += 1
-			print "date"
 		if self.website() != None:
 			point += 1
-			print "website"
 		if self.email() != None:
 			point += 1
-			print "email"
 		if self.description() != None:
 			point += 1
-			print "description"
 		if self.about() != None:
 			point += 1
-			print "about"
 		return point
 
 	def post_date_diff(self):
@@ -82,9 +80,11 @@ class fbAPI(object):
 	def id(self):
 		return self.response['id']
 
-class twitterAPI(object):
+# class twitterAPI(object):
 
-	def __init__(self, link):
-		start = link.find('twitter.com/') + 12
-		end = link[start:].find('/') + start
-		self.page = link[start:end]
+# 	def __init__(self, link):
+# 		start = link.find('twitter.com/') + 12
+# 		end = link[start:].find('/') + start
+# 		self.page = link[start:end]
+
+#  curl --get 'https://api.twitter.com/1.1/statuses/user_timeline.json' --data 'count=1&screen_name=freshy_freddy' --header 'Authorization: OAuth oauth_consumer_key="TvpN2t3xLm1mHlzYUpHtGzN4n", oauth_nonce="0e5bc766548a941a8e3390621d63e1ee", oauth_signature="wbqugutxmpPOLq%2BgTwmQpv4rKPA%3D", oauth_signature_method="HMAC-SHA1", oauth_timestamp="1459930228", oauth_version="1.0"'
