@@ -38,16 +38,14 @@ with open('URAP.csv', 'rb') as csvfile:
 				if row[5] != "" and row[5] != "Awardee Reporting":
 					data[row[2]][3].append(row[5])
 				if row[0] != "":
-					print row[0].find("\n") != -1
-					data[row[2]][4].append(row[0])
+					data[row[2]][4].append(row[0].replace("\n", " "))
 			else:
 				if row[3] != "":
 					data[prev][1] += clean(row[3])
 				if row[5] != "" and row[5] != "Awardee Reporting":
 					data[prev][3].append(row[5])
 				if row[0] != "" and row[0] not in data[prev][4]:
-					print row[0].find("\n") != -1
-					data[prev][4].append(row[0])
+					data[prev][4].append(row[0].replace("\n", " "))
 
 with open('cleaned.csv', 'wb') as csvfile:
 	writer = csv.writer(csvfile)
