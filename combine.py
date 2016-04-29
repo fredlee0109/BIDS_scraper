@@ -18,37 +18,34 @@ def clean(dollar):
 		dollar = dollar[0:dollar.find(".")]
 	return int(dollar)
 
-with open('claned.csv', 'rb') as csvfile:
-	with open('URAP.csv', 'rb') as csvfile:
+def isSocial(link):
+	if link.find("facebook") != -1 and link.find("media") != -1:
+		return True
+	if link.find("linkedin") != -1 or link.find("angel.co") != -1 or link.find("twitter") != -1:
+		return True
+	return False
 
-with open('URAP.csv', 'rb') as csvfile:
-	reader = csv.reader(csvfile, delimiter=',')
-	cols = []
+cdata = {}
+with open('cleaned.csv', 'rb') as cleaned:
+	reader = csv.reader(cleaned, delimiter=',')
 	first = True
-	data = {} # company name : ["Institution", "Funds", "Alive?", "URL", "Competitions", "Founders"]
-	prev = ""
 	for row in reader:
-		# row: [competition, year, startup, fund, source of fund, URL, ...]
 		if first:
 			first = False
 		else:
-			if row[2] != "":
-				prev = row[2]
-				if row[2] not in data:
-					data[row[2]] = ["", 0, "", [], []]
-				if row[3] != "":
-					data[row[2]][1] += clean(row[3])
-				if row[5] != "" and row[5] != "Awardee Reporting":
-					data[row[2]][3].append(row[5])
-				if row[0] != "":
-					data[row[2]][4].append(row[0].replace("\n", " "))
-			else:
-				if row[3] != "":
-					data[prev][1] += clean(row[3])
-				if row[5] != "" and row[5] != "Awardee Reporting":
-					data[prev][3].append(row[5])
-				if row[0] != "" and row[0] not in data[prev][4]:
-					data[prev][4].append(row[0].replace("\n", " "))
+			cdata[row[0]] = row[4]
+with open('full.csv', 'rb') as full:
+	reader = csv.reader(cleaned, delimiter=',')
+	first = True
+	for row in reader:
+		if first:
+			first = False
+		else:
+			if row[0] in cdata and len(cdata[row[0]]) != 0:
+				for link in cdata[row[0]]:
+					if isSocia(link):
+						
+
 
 with open('cleaned.csv', 'wb') as csvfile:
 	writer = csv.writer(csvfile)
